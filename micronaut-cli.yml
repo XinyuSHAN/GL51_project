@@ -1,5 +1,0 @@
-profile: service
-defaultPackage: projet.gl51
----
-testFramework: spock
-sourceLanguage: groovy
