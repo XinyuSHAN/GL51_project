@@ -1,6 +1,6 @@
-package gl51.project
+package projet.gl51;
 
-class Student {
-   String firstName
-   String lastName
+public class Student {
+	String firstName
+	String lastName
 }
