@@ -66,7 +66,19 @@ class MemoryProductStorageTest extends Specification {
 		then:
 		all.first().getName() == "chips Lays"
 		all.first().getPrice() == 4
+		
+		where:
+		name | description | price | idealTemperature | name1 | description1 | price1 | idealTemperature1
+		"Chips" | "delicious" | 2 | 10 | "chips Lays" | "more delicious" | 4 | 10
 
+	}
+	
+	def "get or throw no-existing"(){
+		when:
+		store.getByID('notExist')
+
+		then:
+		thrown NotExistingProductException
 	}
 
 
