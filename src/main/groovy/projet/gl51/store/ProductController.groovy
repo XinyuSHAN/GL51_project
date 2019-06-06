@@ -44,8 +44,8 @@ class ProductController {
 	 * @param product
 	 * @return string
 	 */
-	@Post(uri ="/save" )
-    String save(@Body Product product){
+	@Post(uri ="/" )
+    String create(@Body Product product){
         inMemory.save(product)
     }
 
@@ -54,19 +54,29 @@ class ProductController {
 	 * @param product
 	 * @return string
 	 */
-	@Delete(uri ="/{id}" )
-    HttpStatus delete(String id){
-            inMemory.delete(id)
-            HttpStatus.OK
+	@Delete("/{id}")
+	HttpStatus delete(String id) {
+		try {
+			storage.delete(id)
+			HttpStatus.OK
+		}
+		catch(NotExistingProductException e){
+			HttpStatus.NOT_FOUND
+		}
 }
 	/**
 	 * update a product
 	 * @param product
 	 * @return string
 	 */
-	@Patch(uri ="/update" )
-    HttpStatus update(@Body Product product) {
-        inMemory.update(product.id,product)
-        HttpStatus.OK
+	@Patch("/{id}")
+    HttpStatus update(String id, @Body Product p) {
+        try {
+            storage.update(id, p)
+            HttpStatus.OK
+        }
+        catch(NotExistingProductException e){
+            HttpStatus.NOT_FOUND
+        }
 }
 }

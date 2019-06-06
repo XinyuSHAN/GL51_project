@@ -21,7 +21,7 @@ class DatabaseProductStorageTest extends Specification {
 
 	void "empty product list"() {
 		given:
-		List<Product> products = client.toBlocking().retrieve(HttpRequest.GET('/store/product'), Argument.listOf(Product).type)
+		List<Product> products = client.toBlocking().retrieve(HttpRequest.GET('/product'), Argument.listOf(Product).type)
 
 		expect:
 		products == []
@@ -29,12 +29,12 @@ class DatabaseProductStorageTest extends Specification {
 
 	void "update-->change props"() {
 		setup:
-		String id = client.toBlocking().retrieve(HttpRequest.POST('/store/product', new Product(name, description, price, idealTemperature)))
+		String id = client.toBlocking().retrieve(HttpRequest.POST('/product', new Product(name, description, price, idealTemperature)))
 
 		when:
 		Product otherProduct = new Product(name, description, price, idealTemperature)
-		HttpStatus status = client.toBlocking().retrieve(HttpRequest.PATCH('/store/product/' + id, otherProduct), Argument.of(HttpStatus).type)
-		Product updatedProduct = client.toBlocking().retrieve(HttpRequest.GET('/store/product/' + id), Argument.of(Product).type)
+		HttpStatus status = client.toBlocking().retrieve(HttpRequest.PATCH('/product/' + id, otherProduct), Argument.of(HttpStatus).type)
+		Product updatedProduct = client.toBlocking().retrieve(HttpRequest.GET('/product/' + id), Argument.of(Product).type)
 
 		then:
 		status == OK
@@ -47,8 +47,8 @@ class DatabaseProductStorageTest extends Specification {
 	}
 	void "create"(){
 		when:
-		String id = client.toBlocking().retrieve(HttpRequest.POST('/store/product', new Product(name, description, price, idealTemperature)))
-		Product productReturned = client.toBlocking().retrieve(HttpRequest.GET('/store/product/' + id), Argument.of(Product).type)
+		String id = client.toBlocking().retrieve(HttpRequest.POST('/product', new Product(name, description, price, idealTemperature)))
+		Product productReturned = client.toBlocking().retrieve(HttpRequest.GET('/product/' + id), Argument.of(Product).type)
 
 		then:
 		id != ""
@@ -61,11 +61,11 @@ class DatabaseProductStorageTest extends Specification {
 	
 	void "delete"(){
 		setup:
-		String id = client.toBlocking().retrieve(HttpRequest.POST('/store/product', new Product(name, description, price, idealTemperature)))
+		String id = client.toBlocking().retrieve(HttpRequest.POST('/product', new Product(name, description, price, idealTemperature)))
 
 		when:
-		HttpStatus status = client.toBlocking().retrieve(HttpRequest.DELETE('/store/product/' + id), Argument.of(HttpStatus).type)
-		Product productReturned = client.toBlocking().retrieve(HttpRequest.GET('/store/product/' + id), Argument.of(Product).type)
+		HttpStatus status = client.toBlocking().retrieve(HttpRequest.DELETE('/product/' + id), Argument.of(HttpStatus).type)
+		Product productReturned = client.toBlocking().retrieve(HttpRequest.GET('/product/' + id), Argument.of(Product).type)
 
 		then:
 		status == OK
@@ -82,7 +82,7 @@ class DatabaseProductStorageTest extends Specification {
 		String id = UUID.randomUUID().toString()
 
 		when:
-		HttpStatus status = client.toBlocking().retrieve(HttpRequest.DELETE('/store/product/' + id), Argument.of(HttpStatus).type)
+		HttpStatus status = client.toBlocking().retrieve(HttpRequest.DELETE('/product/' + id), Argument.of(HttpStatus).type)
 
 		then:
 		thrown HttpClientResponseException
