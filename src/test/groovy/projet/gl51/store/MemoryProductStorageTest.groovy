@@ -73,13 +73,6 @@ class MemoryProductStorageTest extends Specification {
 
 	}
 	
-	def "get or throw no-existing"(){
-		when:
-		store.getByID('notExist')
-
-		then:
-		thrown NotExistingProductException
-	}
 
 
 	def "get"(){
