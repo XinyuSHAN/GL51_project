@@ -12,7 +12,6 @@ import io.micronaut.http.annotation.Delete
 import javax.inject.Inject
 
 @Controller("/store/product")
-
 class ProductController {
 
     @Inject
