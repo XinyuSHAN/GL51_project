@@ -27,7 +27,18 @@ class MemoryProductStorageTest extends Specification {
 		"Chips" | "delicious" | 2 | 10
 	}
 
-	
+	def "add and give id"(){
+		setup:
+		store.save(new Product())
+		store.save(new Product())
+
+		when:
+		List<Product> all = store.all()
+
+		then:
+		all.get(0).getId() != all.get(1).getId()
+	}
+
 
 	def "delete"(){
 		setup:
