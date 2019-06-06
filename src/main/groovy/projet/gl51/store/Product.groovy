@@ -6,19 +6,20 @@ class Product {
     String description
     double price
     double idealTemperature
-	
-	Product() {
-		this.id = UUID.randomUUID().toString()
-	}
 
-	Product(String name, String description, double price, double idealTemperature) {
-		this.id = UUID.randomUUID().toString()
-		this.name = name
-		this.description = description
-		this.price = price
-		this.idealTemperature = idealTemperature
-	}
-	String getId() {
-		return this.id
-}
+    Product(){
+        this.id = UUID.randomUUID().toString()
+    }
+
+    Product(name, description, price, idealTemperature) {
+        this.name = name
+        this.description = description
+        this.price = price
+        this.idealTemperature = idealTemperature
+        this.id = UUID.randomUUID().toString()
+    }
+
+    String getId() {
+        return this.id
+    }
 }
