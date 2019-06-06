@@ -11,65 +11,34 @@ import io.micronaut.http.annotation.Delete
 
 import javax.inject.Inject
 
-@Controller("/product")
+@Controller("/store/product")
+
 class ProductController {
 
-	@Inject
-    ProductStorage inMemory
+    @Inject
+    ProductStorage storage
 
-    /**
-     * get all product
-     * @return a list of product
-     */
     @Get("/")
-    List<Product> allProduct(){
-        inMemory.all()
-}
-	/**
-	 * get a product by its id
-	 * @param id
-	 * @return a list of product
-	 */
-	@Get("/{id}")
-    Product prodById(String id) {
-        try {
-            return inMemory.getByID(id)
-        } catch (Exception e) {
-            e.printStackTrace()
-            HttpStatus.NOT_FOUND
-        }
-}
-	/**
-	 * save a product
-	 * @param product
-	 * @return string
-	 */
-	@Post(uri ="/" )
-    String create(@Body Product product){
-        inMemory.save(product)
+    List<Product> index() {
+        storage.all()
     }
 
-	/**
-	 * delete a product
-	 * @param product
-	 * @return string
-	 */
-	@Delete("/{id}")
-	HttpStatus delete(String id) {
-		try {
-			storage.delete(id)
-			HttpStatus.OK
-		}
-		catch(NotExistingProductException e){
-			HttpStatus.NOT_FOUND
-		}
-}
-	/**
-	 * update a product
-	 * @param product
-	 * @return string
-	 */
-	@Patch("/{id}")
+    @Get("/{id}")
+    HttpResponse<Product> get(String id) {
+        try {
+            HttpResponse.ok(storage.getByID(id))
+        }
+        catch(NotExistingProductException e) {
+            HttpResponse.notFound()
+        }
+    }
+
+    @Post("/")
+    String create(@Body Product p) {
+        storage.save(p)
+    }
+
+    @Patch("/{id}")
     HttpStatus update(String id, @Body Product p) {
         try {
             storage.update(id, p)
@@ -78,5 +47,17 @@ class ProductController {
         catch(NotExistingProductException e){
             HttpStatus.NOT_FOUND
         }
+    }
+
+    @Delete("/{id}")
+    HttpStatus delete(String id) {
+        try {
+            storage.delete(id)
+            HttpStatus.OK
+        }
+        catch(NotExistingProductException e){
+            HttpStatus.NOT_FOUND
+        }
+    }
 }
-}
+
