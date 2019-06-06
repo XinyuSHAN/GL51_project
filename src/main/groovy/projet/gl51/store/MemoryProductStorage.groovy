@@ -33,8 +33,8 @@ class MemoryProductStorage implements ProductStorage {
     @Override
     Product getByID(String id) {
         Product product = products.find { it.id == id }
-		/*if (product == null) throw new NotExistingProductException()
-			product*/
+		if (product == null) throw new NotExistingProductException()
+			product
 }
 
     /**
