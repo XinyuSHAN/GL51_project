@@ -8,7 +8,7 @@ class MemoryProductStorage implements ProductStorage {
      * creates an new product in the store
      * @param p the product to store
      */
-    List<Product> products = new ArrayList<Product>()
+    List<Product> products =  []
 
     @Override
     void save(Product p) {
@@ -23,7 +23,7 @@ class MemoryProductStorage implements ProductStorage {
      */
     @Override
     void update(String id, Product p) {
-        def index = products.findIndexOf { it.id == id }
+        Integer index = products.findIndexOf { it.id == id }
        if (index == -1) throw new NotExistingProductException()
         p.id = id;
 		products.set(index, p)
