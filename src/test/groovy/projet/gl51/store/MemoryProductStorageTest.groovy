@@ -72,7 +72,13 @@ class MemoryProductStorageTest extends Specification {
 		"Chips" | "delicious" | 2 | 10 | "chips Lays" | "more delicious" | 4 | 10
 
 	}
-	
+	def "get or throw no-existing"(){
+		when:
+		store.getByID('notExist')
+
+		then:
+		thrown NotExistingProductException
+	}
 
 
 	def "get"(){

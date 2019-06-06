@@ -11,70 +11,62 @@ import io.micronaut.http.annotation.Delete
 
 import javax.inject.Inject
 
-@Controller("/store/product")
+@Controller("/product")
 class ProductController {
 
 	@Inject
-	ProductStorage storage
-	/**
-	 * get all product
-	 * @return a list of product
-	 */
-	@Get("/")
-	List<Product> index() {
-		storage.all()
-	}
+    ProductStorage inMemory
+
+    /**
+     * get all product
+     * @return a list of product
+     */
+    @Get("/")
+    List<Product> allProduct(){
+        inMemory.all()
+}
 	/**
 	 * get a product by its id
 	 * @param id
 	 * @return a list of product
 	 */
 	@Get("/{id}")
-	HttpResponse<Product> get(String id) {
-		try {
-			HttpResponse.ok(storage.getByID(id))
-		}
-		catch(NotExistingProductException e) {
-			HttpResponse.notFound()
-		}
-	}
+    Product prodById(String id) {
+        try {
+            return inMemory.getByID(id)
+        } catch (Exception e) {
+            e.printStackTrace()
+            HttpStatus.NOT_FOUND
+        }
+}
 	/**
 	 * save a product
 	 * @param product
 	 * @return string
 	 */
-	@Post("/")
-	String create(@Body Product p) {
-		storage.save(p)
-	}
+	@Post(uri ="/save" )
+    String save(@Body Product product){
+        inMemory.save(product)
+    }
+
 	/**
 	 * delete a product
 	 * @param product
 	 * @return string
 	 */
-	@Patch("/{id}")
-	HttpStatus update(String id, @Body Product p) {
-		try {
-			storage.update(id, p)
-			HttpStatus.OK
-		}
-		catch(NotExistingProductException e){
-			HttpStatus.NOT_FOUND
-		}
-	}
+	@Delete(uri ="/{id}" )
+    HttpStatus delete(String id){
+            inMemory.delete(id)
+            HttpStatus.OK
+}
 	/**
 	 * update a product
 	 * @param product
 	 * @return string
 	 */
-	@Delete("/{id}")
-	HttpStatus delete(String id) {
-		try {
-			storage.delete(id)
-			HttpStatus.OK
-		}
-		catch(NotExistingProductException e){
-			HttpStatus.NOT_FOUND
-		}
-	}
+	@Patch(uri ="/update" )
+    HttpStatus update(@Body Product product) {
+        inMemory.update(product.id,product)
+        HttpStatus.OK
+}
 }
