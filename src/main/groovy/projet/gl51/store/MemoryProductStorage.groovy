@@ -1,6 +1,8 @@
 package projet.gl51.store
+import javax.inject.Singleton
 
-class MemoryProductStorage implements  ProductStorage {
+@Singleton
+class MemoryProductStorage implements ProductStorage {
 
     /**
      * creates an new product in the store
@@ -11,6 +13,7 @@ class MemoryProductStorage implements  ProductStorage {
     @Override
     void save(Product p) {
         products.add(p)
+		p.id
     }
 
     /**
@@ -20,33 +23,19 @@ class MemoryProductStorage implements  ProductStorage {
      */
     @Override
     void update(String id, Product p) {
-        def index
-        products.each { Product p2 ->
-            if (id == p2.id) {
-                index = products.indexOf(p2)
-                products.set(index,p)
-            }
-        }
+        def index = products.findIndexOf { it.id == id }
+       if (index == -1) throw new NotExistingProductException()
+        p.id = id;
+		products.set(index, p)
 
     }
 
-    /**
-     * get a product by its id
-     * @param id
-     * @return a product
-     */
     @Override
     Product getByID(String id) {
-        def product
-        products.each { Product p ->
-            if (p.id == id) {
-                product = p
-            }
-        }
-        if (product != null)
-            product
-
-    }
+        Product product = products.find { it.id == id }
+		/*if (product == null) throw new NotExistingProductException()
+			product*/
+}
 
     /**
      * deletes a product by its id
@@ -56,7 +45,7 @@ class MemoryProductStorage implements  ProductStorage {
     @Override
 
     void delete(String id) {
-        def product = getByID(id)
+        Product product = this.getByID(id)
         products.remove(product)
     }
     /**
