@@ -39,21 +39,6 @@ shadowJar {
     mergeServiceFiles()
 }
 
-jacoco{
-    toolVersion = "0.8.3"
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled = true // coveralls plugin depends on xml format report
-        html.enabled = true
-    }
-}
-
-coveralls {
-    jacocoReportPath 'build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml'
-}
-
 run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
 
 mainClassName = "projet.gl51.Application"
